@@ -4,3 +4,6 @@ env
 settings/epio.py
 .epio-app
 TODO
+.settings
+.pydevproject
+.project
