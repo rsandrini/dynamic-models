@@ -8,8 +8,8 @@ from . import utils
 
 
 def question_pre_save(sender, instance, **kwargs):
-    """ An optional signal to detect renamed slugs. 
-        This will rename the column so that the data is migrated.
+    """ Um sinal opcional para detectar lesmas renomeados.
+         Isso vai mudar o nome da coluna para que os dados são migrados.
     """
     Question = sender
     try:
@@ -25,8 +25,8 @@ def question_pre_save(sender, instance, **kwargs):
 
 
 def question_post_save(sender, instance, created, **kwargs):
-    """ Adapt tables to any relavent changes:
-        If the question slug has been renamed, rename the database column.
+    """ Adaptar tabelas para quaisquer alterações relavent:
+         Se a slug questão foi renomeada, renomeie a coluna do banco de dados.
     """
     try:
         # Regenerate our response model, which may have changed
@@ -51,13 +51,13 @@ def question_post_save(sender, instance, created, **kwargs):
 
 
 def question_post_delete(sender, instance, **kwargs):
-    """ If you delete a question from a survey, update the model. 
+    """ Se você excluir uma pergunta de um levantamento, atualizar o modelo. 
     """
     Response = instance.survey.get_survey_response_model(regenerate=True, notify_changes=True)
 
 
 def survey_post_save(sender, instance, created, **kwargs):
-    """ Ensure that a table exists for this logger. """
+    """ Certifique-se que existe uma tabela para este logger. """
 
     # Force our response model to regenerate
     Response = instance.get_survey_response_model(regenerate=True, notify_changes=False)

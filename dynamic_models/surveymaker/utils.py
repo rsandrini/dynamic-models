@@ -19,7 +19,7 @@ logger = logging.getLogger('surveymaker')
 
 
 def unregister_from_admin(admin_site, model):
-    " Removes the dynamic model from the given admin site "
+    " Remove o modelo dinâmico do site admin dado "
 
     # First deregister the current definition
     # This is done "manually" because model will be different
@@ -41,11 +41,11 @@ def unregister_from_admin(admin_site, model):
 
 
 def reregister_in_admin(admin_site, model, admin_class=None):
-    " (re)registers a dynamic model in the given admin site "
+    " (re) registra um modelo dinâmico no site admin dado "
 
-    # We use our own unregister, to ensure that the correct
-    # existing model is found 
-    # (Django's unregister doesn't expect the model class to change)
+    # Nós usamos o nosso unregister própria, para garantir que o correto
+    # Modelo existente é encontrado
+    # (Unregister Django não espera que a classe de modelo para mudar)
     unregister_from_admin(admin_site, model)
     admin_site.register(model, admin_class)
 
@@ -56,32 +56,32 @@ def reregister_in_admin(admin_site, model, admin_class=None):
 
 
 def when_classes_prepared(app_name, dependencies, fn):
-    """ Runs the given function as soon as the model dependencies are available.
-        You can use this to build dyanmic model classes on startup instead of
-        runtime. 
-
-        app_name       the name of the relevant app
-        dependencies   a list of model names that need to have already been 
-                       prepared before the dynamic classes can be built.
-        fn             this will be called as soon as the all required models 
-                       have been prepared
-
-        NB: The fn will be called as soon as the last required
-            model has been prepared. This can happen in the middle of reading
-            your models.py file, before potentially referenced functions have
-            been loaded. Becaue this function must be called before any 
-            relevant model is defined, the only workaround is currently to 
-            move the required functions before the dependencies are declared.
-
-        TODO: Allow dependencies from other apps?
+    """ Executa a função administrada logo que as dependências do modelo estão disponíveis.
+        Você pode usar isso para construir classes de modelo dyanmic na inicialização, em vez de
+        tempo de execução.
+        
+        app_name o nome do app relevante
+        dependências uma lista de nomes de modelos que precisam já ter sido
+                       preparado antes das aulas dinâmicas podem ser construídas.
+        fn este será chamado logo que os modelos de todos os necessários
+                       Foram preparados
+        
+        NB: A fn será chamado logo que a requerida última
+            modelo foi preparado. Isto pode acontecer no meio da leitura
+            o arquivo models.py, antes de funções potencialmente referenciados têm
+            foi carregado. Becaue esta função deve ser chamada antes de qualquer
+            modelo relevante é definido, a única solução é atualmente a
+            mover as funções necessárias antes que as dependências são declarados.
+        
+        TODO: Permitir dependências de outros aplicativos?
     """
     dependencies = [x.lower() for x in dependencies]
 
     def _class_prepared_handler(sender, **kwargs):
-        """ Signal handler for class_prepared. 
-            This will be run for every model, looking for the moment when all
-            dependent models are prepared for the first time. It will then run
-            the given function, only once.
+        """ Manipulador de sinal para class_prepared.
+            Isto será executado para cada modelo, procurando o momento em que toda
+            modelos dependentes são preparados pela primeira vez. Ela irá então executar
+            a função dada, apenas uma vez.
         """
         sender_name = sender._meta.object_name.lower()
         already_prepared = set(app_cache.app_models.get(app_name,{}).keys() + [sender_name])
@@ -102,11 +102,11 @@ def when_classes_prepared(app_name, dependencies, fn):
                 # TODO Now that the function has been run, should/can we 
                 # disconnect this signal handler?
     
-    # Connect the above handler to the class_prepared signal
-    # NB: Although this signal is officially documented, the documentation
-    # notes the following:
-    #     "Django uses this signal internally; it's not generally used in 
-    #      third-party applications."
+    # Ligue o manipulador acima, para o sinal de class_prepared
+    # NB: Embora este sinal está documentado oficialmente, a documentação
+    # Regista o seguinte:
+    # "Django usa este sinal internamente, não é geralmente utilizado em
+    # Aplicativos de terceiros. "
     class_prepared.connect(_class_prepared_handler, weak=False)
 
 
@@ -135,14 +135,14 @@ def get_cached_model(app_label, model_name, regenerate=False, get_local_hash=lam
 
 
 def remove_from_model_cache(app_label, model_name):
-    """ Removes the given model from the model cache. """
+    """ Remove o modelo dado a partir do cache do modelo. """
     try:
         del app_cache.app_models[app_label][model_name.lower()]
     except KeyError:
         pass
 
 def create_db_table(model_class):
-    """ Takes a Django model class and create a database table, if necessary.
+    """ Toma uma classe de modelo Django e criar uma tabela de banco de dados, se necessário.
     """
     # XXX Create related tables for ManyToMany etc
 
@@ -173,14 +173,14 @@ def delete_db_table(model_class):
 
 
 def _get_fields(model_class):
-    """ Return a list of fields that require table columns. """
+    """ Retorna uma lista de campos que requerem colunas da tabela. """
     return [(f.name, f) for f in model_class._meta.local_fields]
 
 
 def add_necessary_db_columns(model_class):
-    """ Creates new table or relevant columns as necessary based on the model_class.
-        No columns or data are renamed or removed.
-        This is available in case a database exception occurs.
+    """ Cria nova tabela ou colunas pertinentes, se necessário com base no model_class.
+         Sem colunas ou dados são renomeados ou removidos.
+         Esta opção está disponível no caso de uma exceção de banco de dados ocorre.
     """
     db.start_transaction()
 
@@ -198,15 +198,15 @@ def add_necessary_db_columns(model_class):
             db.add_column(table_name, field_name, field)
 
 
-    # Some columns require deferred SQL to be run. This was collected 
-    # when running db.add_column().
+     # Algumas colunas necessitam de SQL adiada para ser executado. Este foi recolhido
+     # Durante a execução db.add_column ().
     db.execute_deferred_sql()
 
     db.commit_transaction()
 
 
 def rename_db_column(model_class, old_name, new_name):
-    """ Rename a sensor's database column. """
+    """ Renomear uma coluna de banco de dados do sensor. """
     table_name = model_class._meta.db_table
     db.start_transaction()
     db.rename_column(table_name, old_name, new_name) 
@@ -215,8 +215,8 @@ def rename_db_column(model_class, old_name, new_name):
 
 
 def notify_model_change(model):
-    """ Notifies other processes that a dynamic model has changed. 
-        This should only ever be called after the required database changes have been made.
+    """ Notifica outros processos que um modelo de dinâmica mudou.
+         Isso só deve ser chamado após as alterações do banco de dados necessários foram feitos.
     """
     CACHE_KEY = HASH_CACHE_TEMPLATE % (model._meta.app_label, model._meta.object_name) 
     cache.set(CACHE_KEY, model._hash)

@@ -11,9 +11,9 @@ from . import signals
 from .dynamic_models import get_survey_response_model, build_existing_survey_response_models
 
 
-# Build all existing survey response models as soon as possible
-# This is optional, but is nice as it avoids building the model when the
-# first relevant view is loaded.
+# Construir todos os modelos de resposta de pesquisa existentes, logo que possível
+# Esta é opcional, mas é bom porque evita a construção do modelo quando a
+# Primeira vista relevante é carregado.
 utils.when_classes_prepared('surveymaker', ['Survey', 'Question'], 
                                 build_existing_survey_response_models)
 
@@ -33,15 +33,15 @@ class Survey(models.Model):
 
     @property
     def Response(self):
-        " Convenient access the relevant model class for the responses "
+        " Acesso conveniente a classe modelo relevante para as respostas "
         return get_survey_response_model(self)
 
     def get_survey_response_model(self, regenerate=False, notify_changes=True):
         return get_survey_response_model(self, regenerate=regenerate, notify_changes=notify_changes)
 
     def get_hash_string(self):
-        """ Return a string to describe the parts of the questions that are
-            relevant to the generated dynamic model (the Response model)
+        """ Retorna uma string para descrever as partes das questões que são
+             relevante para o modelo gerado dinâmico (o modelo de resposta)
         """
         # Only use the fields that are relevant
         val = [(q.slug, q.required, q.question, q.choices, q.rank) for q in self.question_set.all()]

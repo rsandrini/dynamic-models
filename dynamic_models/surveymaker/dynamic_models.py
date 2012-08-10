@@ -8,9 +8,9 @@ from django.core.cache import cache
 from . import utils
 
 def get_survey_response_model(survey, regenerate=False, notify_changes=True):
-    """ Takes a survey object and returns a model for survey responses. 
-        Setting regenerate forces a regeneration, regardless of cached models.
-        Setting notify_changes updates the cache with the current hash.
+    """ Toma um objeto de pesquisa e retorna um modelo de respostas da pesquisa.
+         Definir regenerado força uma regeneração, independentemente de modelos em cache.
+         Notify_changes Definir atualiza o cache com o hash atual.
     """
     name = filter(str.isalpha, survey.slug.encode('ascii', 'ignore'))
     _app_label = 'responses'
@@ -46,12 +46,12 @@ def get_survey_response_model(survey, regenerate=False, notify_changes=True):
 
     model = type('Response'+name, (models.Model,), attrs)
 
-    # You could create the table and columns here if you're paranoid that it
-    # hasn't happened yet. 
-    #utils.create_db_table(model)
-    # Be wary though, that you won't be able to rename columns unless you
-    # prevent the following line from being run.
-    #utils.add_necessary_db_columns(model)
+     # Você pode criar a tabela e as colunas aqui se você é paranóico que
+     # Ainda não aconteceu.
+     # utils.create_db_table (modelo)
+     # Seja cauteloso, porém, que você não será capaz de mudar o nome de colunas, a menos que você
+     # Evitar a seguinte linha a ser executado.
+     # utils.add_necessary_db_columns (modelo)
 
     if notify_changes:
         utils.notify_model_change(model)
@@ -60,7 +60,7 @@ def get_survey_response_model(survey, regenerate=False, notify_changes=True):
 
 
 def build_existing_survey_response_models():
-    """ Builds all existing dynamic models at once. """
+    """ Cria todos os modelos existentes dinâmicos ao mesmo tempo. """
     # To avoid circular imports, the model is retrieved from the model cache
     Survey = models.get_model('surveymaker', 'Survey')
     for survey in Survey.objects.all():
@@ -72,9 +72,9 @@ def build_existing_survey_response_models():
 
 
 def generate_model_hash(survey):
-    """ Take a survey object and generate a suitable hash for the relevant
-        aspect of responses model. 
-        For our survey model, a list of the question slugs 
+    """  Pegue um objeto de pesquisa e gerar um hash adequado para a relevante
+         aspecto de modelo respostas.
+         Para o nosso modelo de pesquisa, uma lista das slugs pergunta
     """
     return md5_constructor(survey.get_hash_string()).hexdigest()
 
