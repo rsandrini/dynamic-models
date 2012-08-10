@@ -169,7 +169,8 @@ if not 'default' in DATABASES:
     DATABASES['default'] = {}
 
 DATABASES['default'].update(dj_database_url.config(default='postgres://'))
-[16h12min18s BRST] Rafael Souza: import sys
+
+import sys
 import urlparse
 
 # Register database schemes in URLs.
