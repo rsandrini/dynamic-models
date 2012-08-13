@@ -8,3 +8,6 @@ Scripts
 *.pyc
 .project
 .pydevproject
+TODO
+.settings
+
