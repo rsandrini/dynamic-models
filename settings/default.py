@@ -103,7 +103,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'dynamic_models.urls'
+ROOT_URLCONF = 'urls'
 
 CACHES = {
     'default': {
@@ -167,6 +167,4 @@ if 'DATABASES' not in locals():
 
 if not 'default' in DATABASES:
     DATABASES['default'] = {}
-
-DATABASES['default'].update(dj_database_url.config(default='postgres://'))
 
