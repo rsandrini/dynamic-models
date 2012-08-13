@@ -168,3 +168,4 @@ if 'DATABASES' not in locals():
 if not 'default' in DATABASES:
     DATABASES['default'] = {}
 
+DATABASES['default'].update(dj_database_url.config(default='postgres://'))
