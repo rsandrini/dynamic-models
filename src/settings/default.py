@@ -1,9 +1,9 @@
 # Django settings for dynamic_models project.
 
 import os
-PROJECT_DIR = os.path.join(os.path.dirname(__file__), '..')
-project_dir = lambda p: os.path.join(PROJECT_DIR, p)
-
+#PROJECT_DIR = os.path.join(os.path.dirname(__file__), '..')
+#project_dir = lambda p: os.path.join(PROJECT_DIR, p)
+PROJECT_DIR = os.path.dirname(__file__)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -32,7 +32,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Europe/Amsterdam'
+TIME_ZONE = 'America/Sao_Paulo'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -50,7 +50,7 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = project_dir('media')
+MEDIA_ROOT = os.path.join(PROJECT_DIR,'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -61,11 +61,11 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = project_dir('static_root')
+STATIC_ROOT = os.path.join(PROJECT_DIR,'static_root')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = os.path.join(PROJECT_DIR,'/static/')
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
@@ -74,7 +74,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    project_dir('static'),
+    os.path.join(PROJECT_DIR,'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -103,7 +103,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'src.urls'
 
 CACHES = {
     'default': {
@@ -113,7 +113,7 @@ CACHES = {
 
 
 TEMPLATE_DIRS = (
-    project_dir('templates'),
+    os.path.join(PROJECT_DIR,'templates'),
 )
 
 INSTALLED_APPS = (
