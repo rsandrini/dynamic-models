@@ -169,4 +169,4 @@ if not 'default' in DATABASES:
     DATABASES['default'] = {}
 
 DATABASES['default'].update(dj_database_url.config(default='postgres://'))
-# LOCALHOST NOT FOUND POSTGREE MODULE
+# LOCALHOST NOT FOUND POSTGREE MODULE 11
